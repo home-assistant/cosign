@@ -16,4 +16,4 @@ Commands:
 - CGO_ENABLED=0 GOOS=linux GOARCH=arm GOARM=7 go build -trimpath -o cosign_armv7 ./cmd/cosign
 - CGO_ENABLED=0 GOOS=linux GOARCH=arm GOARM=6 go build -trimpath -o cosign_armhf ./cmd/cosign
 - GO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -trimpath -o cosign_aarch64 ./cmd/cosign
-- upx -9 -k cosign_amd64 cosign_i386 cosign_armv7 cosign_armhf cosign_aarch64
+- upx -9 cosign_amd64 cosign_i386 cosign_armv7 cosign_armhf cosign_aarch64
