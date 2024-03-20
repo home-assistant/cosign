@@ -1,0 +1,50 @@
+name: build
+
+on:
+  push:
+    branches: ["main"]
+  release:
+    types: ["published"]
+  pull_request:
+    branches: ["main"]
+
+env:
+  GOLANG_VERSION: "1.21"
+
+jobs:
+  build:
+    name: Build ${{ matrix.variant.name }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        variant:
+          - {"name": "cosign_i386", "args": "GOARCH=386"}
+          - {"name": "cosign_amd64", "args": "GOARCH=amd64"}
+          - {"name": "cosign_armhf", "args": "GOARM=6 GOARCH=arm"}
+          - {"name": "cosign_armv7", "args": "GOARM=7 GOARCH=arm"}
+          - {"name": "cosign_aarch64", "args": "GOARCH=arm64"}
+    steps:
+    - name: Checkout the repository
+      uses: actions/checkout@v4.1.2
+      with:
+        repository: sigstore/cosign
+        ref: v2.2.3
+
+    - name: Setup go ${{ env.GOLANG_VERSION }}
+      uses: actions/setup-go@v5.0.0
+      with:
+        go-version: ${{ env.GOLANG_VERSION }}
+
+    - name: Build ${{ matrix.variant.name }}
+      run: CGO_ENABLED=0 GOOS=linux ${{ matrix.variant.args }} go build -trimpath -o "${{ matrix.variant.name }}" ./cmd/cosign
+
+    - name: Upload release asset
+      if: github.event_name == 'release'
+      uses: actions/upload-release-asset@v1.0.2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: "${{ github.workspace }}/${{ matrix.variant.name }}"
+        asset_name: ${{ matrix.variant.name }}
+        asset_content_type: application/x-binary
