@@ -36,7 +36,7 @@ jobs:
         go-version: ${{ env.GOLANG_VERSION }}
 
     - name: Build ${{ matrix.variant.name }}
-      run: CGO_ENABLED=0 GOOS=linux ${{ matrix.variant.args }} go build -trimpath -o "${{ matrix.variant.name }}" ./cmd/cosign
+      run: CGO_ENABLED=0 GOOS=linux ${{ matrix.variant.args }} go build -trimpath -ldflags="-s -w" -o "${{ matrix.variant.name }}" ./cmd/cosign
 
     - name: Upload release asset
       if: github.event_name == 'release'
