@@ -9,7 +9,7 @@ on:
     branches: ["main"]
 
 env:
-  GOLANG_VERSION: "1.21"
+  GOLANG_VERSION: "1.22"
 
 jobs:
   build:
@@ -28,7 +28,7 @@ jobs:
         uses: actions/checkout@v4.1.2
         with:
           repository: sigstore/cosign
-          ref: v2.2.3
+          ref: v2.4.0
 
       - name: Setup go ${{ env.GOLANG_VERSION }}
         uses: actions/setup-go@v5.0.0
