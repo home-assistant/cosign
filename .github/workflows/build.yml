@@ -23,6 +23,7 @@ jobs:
           - { "name": "cosign_armhf", "args": "GOARM=6 GOARCH=arm" }
           - { "name": "cosign_armv7", "args": "GOARM=7 GOARCH=arm" }
           - { "name": "cosign_aarch64", "args": "GOARCH=arm64" }
+          - { "name": "cosign_riscv64", "args": "GOARCH=riscv64" }
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v4.1.2
